@@ -77,7 +77,7 @@ def get_valid_dataset_filepaths(parameters):
     dataset_filepaths = {}
     dataset_brat_folders = {}
     print(parameters['dataset_text_folder'])
-    for dataset_type in ['train', 'valid', 'test', 'deploy']:
+    for dataset_type in ['train', 'dev', 'test', 'deploy']:
         dataset_filepaths[dataset_type] = os.path.join(parameters['dataset_text_folder'], 
             '{0}.txt'.format(dataset_type))
         dataset_brat_folders[dataset_type] = os.path.join(parameters['dataset_text_folder'], 

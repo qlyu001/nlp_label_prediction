@@ -87,8 +87,15 @@ def get_entities_from_brat(text_filepath, annotation_filepath, verbose=False):
                 entity['id'] = id_anno
                 entity['type'] = anno[1]
                 entity['start'] = int(anno[2])
-                entity['end'] = int(anno[3])
-                entity['text'] = ' '.join(anno[4:])
+                if ';' not in anno[3]:
+                    entity['end'] = int(anno[3])
+                    entity['text'] = ' '.join(anno[4:])
+                else:
+                    i = 4
+                    while ';' in anno[i]:
+                        i+=1
+                    entity['end'] = int(anno[i])
+                    entity['text'] = ' '.join(anno[i+1:])     
                 if verbose:
                     print("entity: {0}".format(entity))
                 # Check compatibility between brat text and anootation
@@ -181,7 +188,8 @@ def brat_to_conll(input_folder, output_filepath, tokenizer, language):
                     inside = False
                 previous_token_label = token['label']
                 if verbose: print('{0} {1} {2} {3} {4}\n'.format(token['text'], base_filename, token['start'], token['end'], gold_label))
-                output_file.write('{0} {1} {2} {3} {4}\n'.format(token['text'], base_filename, token['start'], token['end'], gold_label))
+                #output_file.write('{0} {1} {2} {3} {4}\n'.format(token['text'], base_filename, token['start'], token['end'], gold_label))
+                output_file.write('{0} {1}\n'.format(token['text'], gold_label))
             if verbose: print('\n')
             output_file.write('\n')
 
