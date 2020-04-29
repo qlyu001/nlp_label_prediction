@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 from tqdm import tqdm, trange
+import time 
+start = time.time() 
 
 data = pd.read_csv("train_stanford.csv", encoding="latin1").fillna(method="ffill")
 print(data.tail(10))
@@ -47,6 +49,28 @@ from sklearn.model_selection import train_test_split
 from pytorch_pretrained_bert import BertTokenizer, BertConfig
 from pytorch_pretrained_bert import BertForTokenClassification, BertAdam
 
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+# Use plot styling from seaborn.
+def plotG(loss_values,validation_loss_values):  
+    sns.set(style='darkgrid')
+    # Increase the plot size and font size.
+    sns.set(font_scale=1.5)
+    plt.rcParams["figure.figsize"] = (12,6)
+
+    # Plot the learning curve.
+    plt.plot(loss_values, 'b-o', label="training loss")
+    plt.plot(validation_loss_values, 'r-o', label="validation loss")
+
+        # Label the plot.
+    plt.title("Learning curve")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+
+    plt.show()
 
 MAX_LEN = 40
 bs = 8
@@ -125,9 +149,10 @@ def flat_accuracy(preds, labels):
 
 
 
-epochs = 20
+epochs = 3
 max_grad_norm = 2.0
 
+loss_values, validation_loss_values = [], []
 for _ in trange(epochs, desc="Epoch"):
     # TRAIN loop
     model.train()
@@ -156,6 +181,8 @@ for _ in trange(epochs, desc="Epoch"):
         model.zero_grad()
     # print train loss per epoch
     print("Train loss: {}".format(tr_loss/nb_tr_steps))
+    loss_values.append(tr_loss/nb_tr_steps)
+
     # VALIDATION on validation set
     model.eval()
     eval_loss, eval_accuracy = 0, 0
@@ -184,11 +211,13 @@ for _ in trange(epochs, desc="Epoch"):
         nb_eval_examples += b_input_ids.size(0)
         nb_eval_steps += 1
     eval_loss = eval_loss/nb_eval_steps
+    validation_loss_values.append(eval_loss)
     print("Validation loss: {}".format(eval_loss))
     print("Validation Accuracy: {}".format(eval_accuracy/nb_eval_steps))
     pred_tags = [tags_vals[p_i] for p in predictions for p_i in p]
     valid_tags = [tags_vals[l_ii] for l in true_labels for l_i in l for l_ii in l_i]
     print("F1-Score: {}".format(f1_score(pred_tags, valid_tags)))
+    plotG(loss_values,validation_loss_values):  
 
 
 
@@ -225,6 +254,13 @@ for batch in valid_dataloader:
 
 pred_tags = [[tags_vals[p_i] for p_i in p] for p in predictions]
 valid_tags = [[tags_vals[l_ii] for l_ii in l_i] for l in true_labels for l_i in l ]
+
+end = time.time()
+hours, rem = divmod(end-start, 3600)
+minutes, seconds = divmod(rem, 60)
+print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+
+print("--- %s seconds ---" % (time.time() - start_time))
 print("Validation loss: {}".format(eval_loss/nb_eval_steps))
 print("Validation Accuracy: {}".format(eval_accuracy/nb_eval_steps))
 print("Validation F1-Score: {}".format(f1_score(pred_tags, valid_tags)))
