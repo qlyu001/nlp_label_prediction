@@ -53,7 +53,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Use plot styling from seaborn.
-def plotG(loss_values,validation_loss_values):  
+def plotG( loss_values , validation_loss_values ):  
     sns.set(style='darkgrid')
     # Increase the plot size and font size.
     sns.set(font_scale=1.5)
@@ -216,7 +216,7 @@ for _ in trange(epochs, desc="Epoch"):
     pred_tags = [tags_vals[p_i] for p in predictions for p_i in p]
     valid_tags = [tags_vals[l_ii] for l in true_labels for l_i in l for l_ii in l_i]
     print("F1-Score: {}".format(f1_score(pred_tags, valid_tags)))
-    plotG(loss_values,validation_loss_values):  
+    plotG(loss_values,validation_loss_values) 
 
 
 
