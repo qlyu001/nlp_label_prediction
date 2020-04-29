@@ -50,7 +50,6 @@ from pytorch_pretrained_bert import BertTokenizer, BertConfig
 from pytorch_pretrained_bert import BertForTokenClassification, BertAdam
 
 import matplotlib.pyplot as plt
-%matplotlib inline
 import seaborn as sns
 
 # Use plot styling from seaborn.
