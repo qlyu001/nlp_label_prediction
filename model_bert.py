@@ -259,7 +259,7 @@ hours, rem = divmod(end-start, 3600)
 minutes, seconds = divmod(rem, 60)
 print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
 
-print("--- %s seconds ---" % (time.time() - start_time))
+print("--- %s seconds ---" % (time.time() - start))
 print("Validation loss: {}".format(eval_loss/nb_eval_steps))
 print("Validation Accuracy: {}".format(eval_accuracy/nb_eval_steps))
 print("Validation F1-Score: {}".format(f1_score(pred_tags, valid_tags)))
