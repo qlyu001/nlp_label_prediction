@@ -4,7 +4,7 @@ from tqdm import tqdm, trange
 import time 
 start = time.time() 
 
-data = pd.read_csv("train_stanford.csv", encoding="latin1").fillna(method="ffill")
+data = pd.read_csv("testdata/train_stanford.csv", encoding="latin1").fillna(method="ffill")
 print(data.tail(10))
 
 
