@@ -335,12 +335,12 @@ def main():
 
     processor = NerProcessor()
     data = pd.read_csv(args.data_dir+"/train.txt", encoding="latin1", sep=" ", header=None).fillna(method="ffill")
-    data.column = ["Word","tags"]
+    data.columns = ['Word','tags']
     #getter = SentenceGetter(data)
     #label_list = [[s[2] for s in sent] for sent in getter.sentences]
     #flatten_list = list(chain.from_iterable(label_list))
     #x = np.array(flatten_list)
-    label_list = data["tags"].unique()
+    label_list = data['tags'].unique()
     #label_list = processor.get_labels()
     num_labels = len(label_list) + 1
 
