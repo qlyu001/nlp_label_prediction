@@ -340,7 +340,7 @@ def main():
     #label_list = [[s[2] for s in sent] for sent in getter.sentences]
     #flatten_list = list(chain.from_iterable(label_list))
     #x = np.array(flatten_list)
-    label_list = df.tags.unique()
+    label_list = data.tags.unique()
     #label_list = processor.get_labels()
     num_labels = len(label_list) + 1
 
