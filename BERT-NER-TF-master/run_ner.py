@@ -334,7 +334,6 @@ def main():
     args = parser.parse_args()
 
     processor = NerProcessor()
-    flatten_list = list(chain.from_iterable(ini_list))
     data = pd.read_csv(args.data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
     getter = SentenceGetter(data)
     label_list = [[s[2] for s in sent] for sent in getter.sentences]
