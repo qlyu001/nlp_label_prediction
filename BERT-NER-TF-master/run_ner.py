@@ -318,8 +318,8 @@ def main():
     #flatten_list = list(chain.from_iterable(label_list))
     #x = np.array(flatten_list)
     label_list = data['tags'].unique()
-    label_list.append("[CLS]")
-    label_list.append("[SEP]")
+    label_list.append(label_list,["[CLS]","[SEP]"])
+    #label_list.append()
     #label_list = processor.get_labels()
     num_labels = len(label_list) + 1
 
