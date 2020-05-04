@@ -15,6 +15,7 @@ import numpy as np
 import tensorflow as tf
 from fastprogress import master_bar, progress_bar
 from seqeval.metrics import classification_report
+from itertools import chain
 
 from model import BertNer
 from optimization import AdamWeightDecay, WarmUp
@@ -333,10 +334,12 @@ def main():
     args = parser.parse_args()
 
     processor = NerProcessor()
+    flatten_list = list(chain.from_iterable(ini_list))
     data = pd.read_csv(args.data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
     getter = SentenceGetter(data)
     label_list = [[s[2] for s in sent] for sent in getter.sentences]
-    x = np.array(label_list)
+    flatten_list = list(chain.from_iterable(label_list))
+    x = np.array(flatten_list)
     label_list = np.unique(x)
     #label_list = processor.get_labels()
     num_labels = len(label_list) + 1
