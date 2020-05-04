@@ -136,6 +136,8 @@ class NerProcessor(DataProcessor):
         data = pd.read_csv(data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
         getter = SentenceGetter(data)
         self.labels = [[s[2] for s in sent] for sent in getter.sentences]
+        self.labels.insert("[CLS]")
+        self.labels.insert("[SEP]")
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "train.txt")), "train")
 
