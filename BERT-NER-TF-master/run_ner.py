@@ -134,7 +134,7 @@ class NerProcessor(DataProcessor):
     def get_train_examples(self, data_dir):
         """See base class."""
         data = pd.read_csv(data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
-        labels = [[s[2] for s in sent] for sent in getter.sentences]
+        self.labels = [[s[2] for s in sent] for sent in getter.sentences]
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "train.txt")), "train")
 
@@ -149,7 +149,7 @@ class NerProcessor(DataProcessor):
             self._read_tsv(os.path.join(data_dir, "test.txt")), "test")
 
     def get_labels(self):
-        return labels
+        return self.labels
 
     def _create_examples(self, lines, set_type):
         examples = []
