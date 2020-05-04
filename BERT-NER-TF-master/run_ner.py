@@ -336,7 +336,8 @@ def main():
     data = pd.read_csv(args.data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
     getter = SentenceGetter(data)
     label_list = [[s[2] for s in sent] for sent in getter.sentences]
-    label_list = list(set([x[1] for x in label_list]))
+    x = np.array(label_list)
+    label_list = np.unique(x)
     #label_list = processor.get_labels()
     num_labels = len(label_list) + 1
 
