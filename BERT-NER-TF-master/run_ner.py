@@ -334,12 +334,13 @@ def main():
     args = parser.parse_args()
 
     processor = NerProcessor()
-    data = pd.read_csv(args.data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
-    getter = SentenceGetter(data)
-    label_list = [[s[2] for s in sent] for sent in getter.sentences]
-    flatten_list = list(chain.from_iterable(label_list))
-    x = np.array(flatten_list)
-    label_list = np.unique(x)
+    data = pd.read_csv(args.data_dir+"/train.txt", encoding="latin1", sep=" ", header=None).fillna(method="ffill")
+    data.column = ["Word","tags"]
+    #getter = SentenceGetter(data)
+    #label_list = [[s[2] for s in sent] for sent in getter.sentences]
+    #flatten_list = list(chain.from_iterable(label_list))
+    #x = np.array(flatten_list)
+    label_list = df.tags.unique()
     #label_list = processor.get_labels()
     num_labels = len(label_list) + 1
 
