@@ -127,10 +127,9 @@ class SentenceGetter(object):
             return s
         except:
             return None
-            
+
 class NerProcessor(DataProcessor):
     """Processor for the CoNLL-2003 data set."""
-    labels = []
     def get_train_examples(self, data_dir):
         """See base class."""
         data = pd.read_csv(data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
@@ -334,7 +333,10 @@ def main():
     args = parser.parse_args()
 
     processor = NerProcessor()
-    label_list = processor.get_labels()
+    data = pd.read_csv(args.data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
+    getter = SentenceGetter(data)
+    label_list = [[s[2] for s in sent] for sent in getter.sentences]
+    #label_list = processor.get_labels()
     num_labels = len(label_list) + 1
 
     if os.path.exists(args.output_dir) and os.listdir(args.output_dir) and args.do_train:
