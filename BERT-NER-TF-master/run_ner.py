@@ -10,6 +10,7 @@ import random
 import shutil
 import sys
 
+import pandas as pd
 import numpy as np
 import tensorflow as tf
 from fastprogress import master_bar, progress_bar
