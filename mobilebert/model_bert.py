@@ -78,7 +78,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 n_gpu = torch.cuda.device_count()
 
 print(torch.cuda.get_device_name(0))
-model =  BertTokenizer.from_pretrained('./config/uncased_L-24_H-128_B-512_A-4_F-4_OPT.json', do_lower_case=True)
+tokenizer =  BertTokenizer.from_pretrained('./config/uncased_L-24_H-128_B-512_A-4_F-4_OPT.json', do_lower_case=True)
 #BERT_FP = './config/uncased_L-24_H-1024_B-512_A-4.json'
 #tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
 tokenized_texts = [tokenizer.tokenize(sent) for sent in sentences]
