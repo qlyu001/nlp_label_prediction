@@ -130,9 +130,11 @@ class SentenceGetter(object):
             
 class NerProcessor(DataProcessor):
     """Processor for the CoNLL-2003 data set."""
-
+    labels = []
     def get_train_examples(self, data_dir):
         """See base class."""
+        data = pd.read_csv(data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
+        labels = [[s[2] for s in sent] for sent in getter.sentences]
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "train.txt")), "train")
 
@@ -147,9 +149,6 @@ class NerProcessor(DataProcessor):
             self._read_tsv(os.path.join(data_dir, "test.txt")), "test")
 
     def get_labels(self):
-        data = pd.read_csv(data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
-        labels = [[s[2] for s in sent] for sent in getter.sentences]
-        print(labels[0])
         return labels
 
     def _create_examples(self, lines, set_type):
