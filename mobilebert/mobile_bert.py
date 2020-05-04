@@ -84,8 +84,8 @@ tokenizer =  BertTokenizer.from_pretrained('./config/uncased_L-24_H-128_B-512_A-
 tokenized_texts = [tokenizer.tokenize(sent) for sent in sentences]
 print(tokenized_texts[0])
 
-tokenizer =  BertTokenizer.from_pretrained('./config/uncased_L-24_H-128_B-512_A-4_F-4_OPT.json', do_lower_case=True)
+
 #BERT_FP = './config/uncased_L-24_H-1024_B-512_A-4.json'
-#tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
 tokenized_texts = [tokenizer.tokenize(sent) for sent in sentences]
 print(tokenized_texts[0])
