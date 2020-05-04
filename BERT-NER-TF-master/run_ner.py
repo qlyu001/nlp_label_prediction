@@ -136,8 +136,8 @@ class NerProcessor(DataProcessor):
         data = pd.read_csv(data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
         getter = SentenceGetter(data)
         self.labels = [[s[2] for s in sent] for sent in getter.sentences]
-        self.labels.append("[CLS]")
-        self.labels.append("[SEP]")
+        #self.labels.append("[CLS]")
+        #self.labels.append("[SEP]")
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "train.txt")), "train")
 
@@ -198,21 +198,21 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         ntokens = []
         segment_ids = []
         label_ids = []
-        ntokens.append("[CLS]")
+        #ntokens.append("[CLS]")
         segment_ids.append(0)
         valid.insert(0, 1)
         label_mask.insert(0, True)
-        label_ids.append(label_map["[CLS]"])
+        #label_ids.append(label_map["[CLS]"])
         for i, token in enumerate(tokens):
             ntokens.append(token)
             segment_ids.append(0)
             if len(labels) > i:
                 label_ids.append(label_map[labels[i]])
-        ntokens.append("[SEP]")
+        #ntokens.append("[SEP]")
         segment_ids.append(0)
         valid.append(1)
         label_mask.append(True)
-        label_ids.append(label_map["[SEP]"])
+        #label_ids.append(label_map["[SEP]"])
         input_ids = tokenizer.convert_tokens_to_ids(ntokens)
         input_mask = [1] * len(input_ids)
         label_mask = [True] * len(label_ids)
