@@ -109,35 +109,10 @@ class DataProcessor(object):
         return readfile(input_file)
 
 
-class SentenceGetter(object):
-    
-    def __init__(self, data):
-        self.n_sent = 1
-        self.data = data
-        self.empty = False
-        agg_func = lambda s: [(w, p, t) for w, p, t in zip(s["Word"].values.tolist(),
-                                                           s["POS"].values.tolist(),
-                                                           s["Tag"].values.tolist())]
-        self.grouped = self.data.groupby("Sentence #").apply(agg_func)
-        self.sentences = [s for s in self.grouped]
-    
-    def get_next(self):
-        try:
-            s = self.grouped["Sentence: {}".format(self.n_sent)]
-            self.n_sent += 1
-            return s
-        except:
-            return None
-
 class NerProcessor(DataProcessor):
     """Processor for the CoNLL-2003 data set."""
     def get_train_examples(self, data_dir):
         """See base class."""
-        data = pd.read_csv(data_dir+"/train_stanford.csv", encoding="latin1").fillna(method="ffill")
-        getter = SentenceGetter(data)
-        self.labels = [[s[2] for s in sent] for sent in getter.sentences]
-        #self.labels.append("[CLS]")
-        #self.labels.append("[SEP]")
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "train.txt")), "train")
 
@@ -198,21 +173,21 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         ntokens = []
         segment_ids = []
         label_ids = []
-        #ntokens.append("[CLS]")
+        ntokens.append("[CLS]")
         segment_ids.append(0)
         valid.insert(0, 1)
         label_mask.insert(0, True)
-        #label_ids.append(label_map["[CLS]"])
+        label_ids.append(label_map["[CLS]"])
         for i, token in enumerate(tokens):
             ntokens.append(token)
             segment_ids.append(0)
             if len(labels) > i:
                 label_ids.append(label_map[labels[i]])
-        #ntokens.append("[SEP]")
+        ntokens.append("[SEP]")
         segment_ids.append(0)
         valid.append(1)
         label_mask.append(True)
-        #label_ids.append(label_map["[SEP]"])
+        label_ids.append(label_map["[SEP]"])
         input_ids = tokenizer.convert_tokens_to_ids(ntokens)
         input_mask = [1] * len(input_ids)
         label_mask = [True] * len(label_ids)
@@ -226,12 +201,12 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         while len(label_ids) < max_seq_length:
             label_ids.append(0)
             label_mask.append(False)
-        #assert len(input_ids) == max_seq_length
-        #assert len(input_mask) == max_seq_length
-        #assert len(segment_ids) == max_seq_length
-        #assert len(label_ids) == max_seq_length
-        #assert len(valid) == max_seq_length
-        #assert len(label_mask) == max_seq_length
+        assert len(input_ids) == max_seq_length
+        assert len(input_mask) == max_seq_length
+        assert len(segment_ids) == max_seq_length
+        assert len(label_ids) == max_seq_length
+        assert len(valid) == max_seq_length
+        assert len(label_mask) == max_seq_length
 
         if ex_index < 5:
             logger.info("*** Example ***")
@@ -336,11 +311,15 @@ def main():
     processor = NerProcessor()
     data = pd.read_csv(args.data_dir+"/train.txt", encoding="latin1", sep=" ", header=None).fillna(method="ffill")
     data.columns = ['Word','tags']
+    #self.labels.append("[CLS]")
+    #self.labels.append("[SEP]")
     #getter = SentenceGetter(data)
     #label_list = [[s[2] for s in sent] for sent in getter.sentences]
     #flatten_list = list(chain.from_iterable(label_list))
     #x = np.array(flatten_list)
     label_list = data['tags'].unique()
+    label_list.append("[CLS]")
+    label_list.append("[SEP]")
     #label_list = processor.get_labels()
     num_labels = len(label_list) + 1
 
