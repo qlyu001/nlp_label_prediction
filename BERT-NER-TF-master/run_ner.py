@@ -226,12 +226,12 @@ def convert_examples_to_features(examples, label_list, max_seq_length, tokenizer
         while len(label_ids) < max_seq_length:
             label_ids.append(0)
             label_mask.append(False)
-        assert len(input_ids) == max_seq_length
-        assert len(input_mask) == max_seq_length
-        assert len(segment_ids) == max_seq_length
-        assert len(label_ids) == max_seq_length
-        assert len(valid) == max_seq_length
-        assert len(label_mask) == max_seq_length
+        #assert len(input_ids) == max_seq_length
+        #assert len(input_mask) == max_seq_length
+        #assert len(segment_ids) == max_seq_length
+        #assert len(label_ids) == max_seq_length
+        #assert len(valid) == max_seq_length
+        #assert len(label_mask) == max_seq_length
 
         if ex_index < 5:
             logger.info("*** Example ***")
