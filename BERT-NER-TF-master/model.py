@@ -38,7 +38,7 @@ class BertNer(tf.keras.Model):
         if type(bert_model) == str:
            
             #init_checkpoint = os.path.join(bert_model,"bert_model.ckpt")
-            init_checkpoint = os.path.join(bert_model,"mobilebert.ckpt")
+            init_checkpoint = os.path.join(bert_model,"mobilebert_variables.ckpt")
             checkpoint = tf.train.Checkpoint(model=self.bert)
             checkpoint.restore(init_checkpoint).assert_existing_objects_matched()
         
