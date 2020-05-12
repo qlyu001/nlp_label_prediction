@@ -36,7 +36,9 @@ class BertNer(tf.keras.Model):
         _, sequence_output = bert_layer(input_word_ids, input_mask,input_type_ids)
         self.bert = tf.keras.Model(inputs=[input_word_ids, input_mask, input_type_ids],outputs=[sequence_output])
         if type(bert_model) == str:
-            init_checkpoint = os.path.join(bert_model,"bert_model.ckpt")
+           
+            #init_checkpoint = os.path.join(bert_model,"bert_model.ckpt")
+            init_checkpoint = os.path.join(bert_model,"mobilebert_variables.ckpt")
             checkpoint = tf.train.Checkpoint(model=self.bert)
             checkpoint.restore(init_checkpoint).assert_existing_objects_matched()
         
