@@ -6,7 +6,7 @@ import torch
 
 def sentenceLabel(sentence):
     device = torch.device("cpu")
-    output_dir = './model_save/'
+    output_dir = './roberta_few_labels/'
     tokenizer = BertTokenizer.from_pretrained(output_dir)
     model = BertForSequenceClassification.from_pretrained(output_dir)
     model.to(device)
