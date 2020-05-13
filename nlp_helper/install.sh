@@ -1,3 +1,4 @@
+python3 -m pip install -r requirements.txt
 fileid="1swWtUjFAh66GuYWM-ZJMsFYlmvgE6U2j"
 filename="roberta_few_labels.zip"
 curl -c ./cookie -s -L "https://drive.google.com/uc?export=download&id=${fileid}" 
