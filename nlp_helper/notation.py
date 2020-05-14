@@ -4,6 +4,20 @@ from transformers import BertTokenizer, BertConfig, RobertaTokenizer
 from transformers import BertForTokenClassification, RobertaForTokenClassification
 import torch
 import pickle
+import codecs
+
+def locationIndex(sentences):
+    start = 0
+    end = 0
+    location = []
+    for sentence in sentences:
+        for words in sentence:
+            for word in words:
+                end = start + len(word)
+                print(word)
+                location.append([start,end])
+                start = end + 1
+    return location
 
 def sentenceLabel(sentence):
     f = open('./model_save/tag2idx.pckl', 'rb')
@@ -20,8 +34,6 @@ def sentenceLabel(sentence):
     all_entities = []
 
     tokenized_sentence = tokenizer.encode(sentence)
-    input_ids = torch.tensor([tokenized_sentence]).cuda()
-
     input_ids = torch.tensor([tokenized_sentence]).to(device)
 
     predictions = []
@@ -29,6 +41,7 @@ def sentenceLabel(sentence):
         output = model(input_ids)
         output = output[0].detach().cpu().numpy()
         predictions.extend([list(p) for p in np.argmax(output, axis=2)])
+
 
     tags_predictions = []
     for x in predictions[0]:
@@ -49,9 +62,20 @@ def sentenceLabel(sentence):
     all_tokens.append(tokens[1:-1])
 
 
-    print(all_tokens)
-    print(all_entities)
+    #print(all_tokens)
+    #print(all_entities)
 
     return all_tokens,all_entities
 if __name__ == '__main__':
-    sentenceLabel("a boy has fever and cold ")
+    f = open("15939911.txt", "r")
+    sentences = []
+    tokens = []
+    for x in f:
+        sentence,token = sentenceLabel(x)
+        sentences.append(sentence)
+        token.append(token)
+        
+    #print(sentences)
+    #print(tokens)
+    location = locationIndex(sentences)
+    print(location)
