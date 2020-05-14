@@ -6,12 +6,10 @@ import torch
 import pickle
 
 def sentenceLabel(sentence):
-    f = open('./model_save/tags_vals.pckl', 'rb')
-    tags_vals = pickle.load(f)
     f = open('./model_save/tag2idx.pckl', 'rb')
     tag2idx = pickle.load(f)
     device = torch.device("cpu")
-    output_dir = './roberta_few_labels/'
+    output_dir = './model_save/'
     idx2tag = dict((v,k) for k, v in tag2idx.items())
     tokenizer = RobertaTokenizer.from_pretrained(output_dir)
     model = RobertaForTokenClassification.from_pretrained(output_dir)
