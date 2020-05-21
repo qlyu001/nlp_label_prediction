@@ -58,7 +58,7 @@ from torch.utils.data import TensorDataset, DataLoader, RandomSampler, Sequentia
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 from transformers import BertTokenizer, BertConfig, RobertaTokenizer
-ffrom transformers import DistilBertTokenizer, DistilBertModel
+from transformers import DistilBertTokenizer, DistilBertModel
 
 import matplotlib.pyplot as plt
 import seaborn as sns
