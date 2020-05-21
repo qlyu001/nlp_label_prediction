@@ -158,7 +158,7 @@ def flat_accuracy(preds, labels):
 
 
 
-epochs = 10
+epochs = 5
 max_grad_norm = 3.0
 
 loss_values, validation_loss_values, f1_scores = [], [], []
