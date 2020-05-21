@@ -10,7 +10,7 @@ start = time.time()
 data = pd.read_csv("few_labels_train_valid.csv", encoding="latin1").fillna(method="ffill")
 print(data.tail(10))
 
-
+MAX_LEN = 75
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 n_gpu = torch.cuda.device_count()
 
