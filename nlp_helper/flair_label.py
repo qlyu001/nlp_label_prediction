@@ -18,21 +18,33 @@ def locationIndex(sentences):
     return location
 def sentenceLabel(sentence):
     model = SequenceTagger.load_from_file('./best-model.pt')
-    sentence = [tokenize(q) for q in sentence.split('\\n')]
+    sentence = [q for q in sentence.split('\\n')]
     # predict
     all_tokens = []
     all_entities = []
+
     for q in sentence:
-        sen = Sentence(q)
-        
+        sen = Sentence(tokenize(q))
+        text = q.split(' ')
+        #print(text)
         model.predict(sen)
         tokens = []
         entity_types = []
+        prev = ''
         for t in sen.tokens:
+            if prev == '-' or t.text == '-':
+                tokens[-1] = tokens[-1]+t.text
+                prev = t.text
+                print(tokens[-1])
+                continue
             token = t.text
             entity = t.tags['ner'].value
             tokens.append(token)
-            entity_types.append(entity)
+            if(len(entity) < 2):
+                entity_types.append(entity)
+            else:
+                entity_types.append(entity[2:])
+                
         
         all_tokens.append(tokens)
         all_entities.append(entity_types)
